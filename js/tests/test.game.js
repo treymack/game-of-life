@@ -1,12 +1,18 @@
 (function() {
-    var game = new GameOfLife();
-    
     describe('the universe of the Game of Life', function() {
         it('should be an infinite two-dimensional orthogonal grid of square cells');
     });
     
     describe('a cell', function() {
-        it('should be in one of two possible states, alive or dead.');
+        it('should be in one of two possible states, alive or dead.', function() {
+            var cell = new gol.Cell();
+            cell.live();
+            expect(cell.isAlive).to.be.ok();
+            cell.die();
+            expect(cell.isAlive).not.to.be.ok();
+            cell.live();
+            expect(cell.isAlive).to.be.ok();
+        });
     });
     
     describe('every cell interacts with its eight neighbours, which are the cells that are\
