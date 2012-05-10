@@ -39,8 +39,6 @@
                    ,[0,0,0,0,0]]);
             g.tick();
             
-            $('#mocha').append(r.$div);
-                   
             expect(isActive(r, 0, 0)).not.to.be.ok();
             expect(isActive(r, 0, 1)).not.to.be.ok();
             expect(isActive(r, 0, 2)).not.to.be.ok();
