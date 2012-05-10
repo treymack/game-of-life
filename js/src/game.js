@@ -4,6 +4,7 @@ var gol = (function() {
             rows: 3
           , cols: 3
         }, options);
+        this.reporters = [];
         this.rows = options.rows;
         this.cols = options.cols;
         
@@ -30,6 +31,13 @@ var gol = (function() {
             }
         }
     };
+    
+    GameFunc.prototype.report = function report() {
+        var self = this;
+        _.each(this.reporters, function(reporter) {
+            reporter.update(self.grid);
+        });
+    };
 
     GameFunc.prototype.init = function init(initRows) {
         if (initRows.length != this.rows)
@@ -44,6 +52,8 @@ var gol = (function() {
                 this.grid[r][c][(initRows[r][c] ? 'live' : 'die')]();
             }
         }
+
+        this.report();
         
         return this;
     };
@@ -72,6 +82,12 @@ var gol = (function() {
         _.each(cellsToMakeDie, function(cell) {
             cell.die();
         });
+        
+        this.report();
+    };
+    
+    GameFunc.prototype.addReporter = function addReporter(reporter) {
+        this.reporters.push(reporter);
     };
 
     function CellFunc(options) {

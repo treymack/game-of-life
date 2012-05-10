@@ -277,6 +277,39 @@
             
         });
     });
+    
+    describe('reporting', function() {
+        function FakeReporter() {
+            this.numTimesUpdateCalled = 0;
+            this.lastGrid = null;
+            this.update = function updated(grid) {
+                this.numTimesUpdateCalled++;
+                this.lastGrid = grid;
+            };
+        };
+        
+        it('should report grid values when init is called', function() {
+            var g = new gol.Game()
+              , r = new FakeReporter();
+            g.addReporter(r);
+            g.init([[0,0,0]
+                   ,[0,0,0]
+                   ,[0,0,0]]);
+            expect(r.lastGrid).to.be.ok();
+            expect(r.lastGrid.length).to.be(3);
+            expect(r.numTimesUpdateCalled).to.be(1);
+        });
+        
+        it('should report grid values when tick is called', function() {
+            var g = new gol.Game()
+              , r = new FakeReporter();
+            g.addReporter(r);
+            g.tick();
+            expect(r.lastGrid).to.be.ok();
+            expect(r.lastGrid.length).to.be(3);
+            expect(r.numTimesUpdateCalled).to.be(1);
+        });
+    });
 
     /*
     describe('the initial pattern', function() {
