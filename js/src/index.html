@@ -1,0 +1,78 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Conway's Game of Life</title>
+  <link rel="stylesheet" href="../lib/mocha/mocha.css" />
+  <script src="../lib/underscore/underscore-min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="../src/game.js"></script>
+  <script src="../src/tableReporter.js"></script>
+</head>
+<body>
+    <fieldset>
+        <table>
+            <tr>
+                <td><label for="numberOfRows">Number of Rows:</label></td>
+                <td><input type="text" id="numberOfRows" value="15" /></td>
+            </tr>
+            <tr>
+                <td><label for="numberOfCols">Number of Columns:</label></td>
+                <td><input type="text" id="numberOfCols" value="60" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="button" id="createBoard" value="Create Board" style="width: 100%" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="button" id="randomize" value="Randomize" style="width: 100%" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="button" id="nextGen" value="Next Gen" style="width: 100%" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="button" id="startStop" value="Start / Stop" style="width: 100%" /></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <div id="gameDiv" />
+    </fieldset>
+    <script>
+        $(function() {
+            var game, reporter;
+            $('#createBoard').click(function() {
+                var rows = $('#numberOfRows').val()
+                  , cols = $('#numberOfCols').val()
+                  , $gameDiv = $('#gameDiv').empty();
+                game = new gol.Game({ rows: rows, cols: cols });
+                reporter = new gol.TableReporter({ game: game, div: $gameDiv });
+                game.addReporter(reporter);
+            });
+            $('#randomize').click(function() {
+                if (game) {
+                    var initGrid = [];
+                    for (var r = 0; r < game.rows; r++) {
+                        initGrid.push([]);
+                        for (var c = 0; c < game.cols; c++) {
+                            initGrid[r].push(Math.random() > 0.5);
+                        }
+                    }
+                    game.init(initGrid);
+                }
+            });
+            $('#nextGen').click(function() {
+                game && game.tick();
+            });
+            
+            var interval;
+            $('#startStop').click(function() {
+                if (game && !interval)
+                    interval = setInterval(function() { game.tick(); }, 200);
+                else {
+                    clearInterval(interval);
+                    interval = undefined;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
