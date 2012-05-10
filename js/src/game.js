@@ -30,18 +30,61 @@ var gol = (function() {
             }
         }
     };
+
+    GameFunc.prototype.init = function init(initRows) {
+        if (initRows.length != this.rows)
+            throw 'row count does not match';
+            
+        for (var r = 0; r < this.rows; r++)
+        {
+            if (initRows[r].length != this.cols)
+                throw 'col count does not match';
+            
+            for (var c = 0; c < this.cols; c++) {
+                this.grid[r][c][(initRows[r][c] ? 'live' : 'die')]();
+            }
+        }
+        
+        return this;
+    };
     
+    GameFunc.prototype.tick = function tick() {
+        var cellsToMakeLive = [], cellsToMakeDie = [];
+        _.each(this.grid, function(row) {
+            _.each(row, function(cell) {
+                var numberOfAliveNeighbors = _.filter(cell.neighbors, function(neighbor) {
+                    return neighbor.isAlive;
+                }).length;
+                
+                if (!cell.isAlive && numberOfAliveNeighbors === 3)
+                    cellsToMakeLive.push(cell);
+                
+                if (cell.isAlive)
+                    if (!(numberOfAliveNeighbors === 2 || numberOfAliveNeighbors === 3))
+                        cellsToMakeDie.push(cell);
+            });
+        });
+        
+        _.each(cellsToMakeLive, function(cell) {
+            cell.live();
+        });
+
+        _.each(cellsToMakeDie, function(cell) {
+            cell.die();
+        });
+    };
+
     function CellFunc(options) {
         this.isAlive = false;
     };
-    
+
     CellFunc.prototype.live = function live() {
         this.isAlive = true;
     };
     CellFunc.prototype.die = function die() {
         this.isAlive = false;
     };
-    
+
     return {
         Game: GameFunc
       , Cell: CellFunc

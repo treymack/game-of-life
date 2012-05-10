@@ -29,7 +29,7 @@
     });
     
     describe('every cell interacts with its eight neighbours, which are the cells that are\
-    horizontally, vertically, or diagonally adjacent', function() {
+              horizontally, vertically, or diagonally adjacent', function() {
         describe('3x3 grid', function() {
             var game = new gol.Game({ rows: 3, cols: 3 });
             describe('top left cell', function() {
@@ -83,20 +83,198 @@
     });
     
     describe('at each step in time, the following transitions occur', function() {
-        describe('any live cell with fewer than two live neighbours', function() {
-            it('should die, as if caused by under-population.');
+        describe('any live cell with fewer than two live neighbours should die, as if\
+                  caused by under-population.', function() {
+            describe('0 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[0,0,0]
+                                                ,[0,1,0]
+                                                ,[0,0,0]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+            
+            describe('1 live neighbor', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[0,0,0]
+                                                ,[0,1,1]
+                                                ,[0,0,0]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
         });
 
-        describe('any live cell with two or three live neighbours', function() {
-            it('should live on to the next generation.');
+        describe('any live cell with two or three live neighbours should live on to\
+                  the next generation.', function() {
+            describe('2 live neighbors', function() {
+                it('it should live', function() {
+                    var g = new gol.Game().init([[0,0,1]
+                                                ,[0,1,0]
+                                                ,[1,0,0]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).to.be.ok();
+                });
+            });
+
+            describe('3 live neighbors', function() {
+                it('it should live', function() {
+                    var g = new gol.Game().init([[0,1,0]
+                                                ,[1,1,0]
+                                                ,[0,0,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).to.be.ok();
+                });
+            });
         });
 
-        describe('any live cell with more than three live neighbours', function() {
-            it('should die, as if by overcrowding.');
+        describe('any live cell with more than three live neighbours should die, as\
+                  if by overcrowding.', function() {
+            describe('4 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[0,1,0]
+                                                ,[1,1,1]
+                                                ,[0,0,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('5 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[0,1,1]
+                                                ,[1,1,1]
+                                                ,[0,0,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('6 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[1,1,1]
+                                                ,[1,1,1]
+                                                ,[0,0,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('7 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[1,1,0]
+                                                ,[1,1,1]
+                                                ,[1,1,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('8 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[1,1,1]
+                                                ,[1,1,1]
+                                                ,[1,1,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
         });
 
-        describe('any dead cell with exactly three live neighbours', function() {
-            it('should become a live cell, as if by reproduction.');
+        describe('any dead cell with exactly three live neighbours should become a\
+                  live cell, as if by reproduction.', function() {
+                  
+            describe('0 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[0,0,0]
+                                                ,[0,0,0]
+                                                ,[0,0,0]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+            
+            describe('1 live neighbor', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[0,0,0]
+                                                ,[0,0,1]
+                                                ,[0,0,0]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('2 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[0,0,1]
+                                                ,[0,0,0]
+                                                ,[1,0,0]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('3 live neighbors', function() {
+                it('it should live', function() {
+                    var g = new gol.Game().init([[0,1,0]
+                                                ,[1,0,0]
+                                                ,[0,0,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).to.be.ok();
+                });
+            });
+
+            describe('4 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[0,1,0]
+                                                ,[1,0,1]
+                                                ,[0,0,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('5 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[0,1,1]
+                                                ,[1,0,1]
+                                                ,[0,0,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('6 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[1,1,1]
+                                                ,[1,0,1]
+                                                ,[0,0,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('7 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[1,1,0]
+                                                ,[1,0,1]
+                                                ,[1,1,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+
+            describe('8 live neighbors', function() {
+                it('it should die', function() {
+                    var g = new gol.Game().init([[1,1,1]
+                                                ,[1,0,1]
+                                                ,[1,1,1]]);
+                    g.tick();
+                    expect(g.grid[1][1].isAlive).not.to.be.ok();
+                });
+            });
+            
         });
     });
 
