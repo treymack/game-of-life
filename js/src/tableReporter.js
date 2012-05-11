@@ -23,14 +23,20 @@ _.extend(gol,
             $table.append(aSingleRow);
         }
         
-        console.log(this.$div);
+		this.$tds = []
+        for (var r = 0; r < this.game.rows; r++) {
+			this.$tds.push([]);
+            for (var c = 0; c < this.game.cols; c++) {
+                this.$tds[r].push($($($table.find('tr')[r]).find('td')[c]));
+			}
+		}
     };
     
     TableReporterFunc.prototype.update = function update(grid) {
         var $table = this.$div.find('table');
         for (var r = 0; r < this.game.rows; r++)
             for (var c = 0; c < this.game.cols; c++) {
-                $($($table.find('tr')[r]).find('td')[c]).attr('bgcolor', this.game.grid[r][c].isAlive ? 'red' : 'white');
+                this.$tds[r][c].attr('bgcolor', this.game.grid[r][c].isAlive ? 'red' : 'white');
             }
     };
     

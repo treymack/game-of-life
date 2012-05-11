@@ -10,6 +10,7 @@
 </head>
 <body>
     <fieldset>
+		<table><tr><td>
         <table>
             <tr>
                 <td><label for="numberOfRows">Number of Rows:</label></td>
@@ -32,6 +33,7 @@
                 <td colspan="2"><input type="button" id="startStop" value="Start / Stop" style="width: 100%" /></td>
             </tr>
         </table>
+		</td><td><span id="timer" /></td></table>
     </fieldset>
     <fieldset>
         <div id="gameDiv" />
@@ -59,14 +61,25 @@
                     game.init(initGrid);
                 }
             });
+			
+			function gameTick() {
+				var startTime = new Date();
+				
+				game.tick();
+				
+				var endTime = new Date()
+				  , duration = endTime - startTime;
+				$('#timer').text(duration);
+			};
+			
             $('#nextGen').click(function() {
-                game && game.tick();
+                game && gameTick();
             });
             
             var interval;
             $('#startStop').click(function() {
                 if (game && !interval)
-                    interval = setInterval(function() { game.tick(); }, 200);
+                    interval = setInterval(function() { gameTick(); }, 200);
                 else {
                     clearInterval(interval);
                     interval = undefined;
