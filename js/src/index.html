@@ -7,6 +7,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script src="../src/game.js"></script>
   <script src="../src/tableReporter.js"></script>
+  <script src="../src/canvasReporter.js"></script>
 </head>
 <body>
     <fieldset>
@@ -46,7 +47,8 @@
                   , cols = $('#numberOfCols').val()
                   , $gameDiv = $('#gameDiv').empty();
                 game = new gol.Game({ rows: rows, cols: cols });
-                reporter = new gol.TableReporter({ game: game, div: $gameDiv });
+                //reporter = new gol.TableReporter({ game: game, div: $gameDiv });
+                reporter = new gol.CanvasReporter({ game: game, div: $gameDiv });
                 game.addReporter(reporter);
             });
             $('#randomize').click(function() {
@@ -79,7 +81,7 @@
             var interval;
             $('#startStop').click(function() {
                 if (game && !interval)
-                    interval = setInterval(function() { gameTick(); }, 200);
+                    interval = setInterval(function() { gameTick(); }, 20);
                 else {
                     clearInterval(interval);
                     interval = undefined;
