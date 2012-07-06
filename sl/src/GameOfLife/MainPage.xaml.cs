@@ -22,11 +22,7 @@ namespace GameOfLife
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            var g = new Game();
-            for (var r = 0; r < g.NumberOfRows; r++)
-            {
-                this.LayoutRoot.RowDefinitions.Add(new RowDefinition());
-            }
+
         }
     }
 }
