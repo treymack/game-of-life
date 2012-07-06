@@ -10,6 +10,8 @@ namespace GameOfLife.Model
         public int Rows { get; set; }
         public int Cols { get; set; }
 
+        public Game() : this(rows: 3, cols: 3) { }
+
         public Game(int rows, int cols)
         {
             this.Rows = rows;
